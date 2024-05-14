@@ -84,8 +84,8 @@ public:
         availableSpot[0].setOccupiedStatus(true);
     }
 
-    void freeSpot(VehicleTypes vehicle){
-        vector<ParkingSpot> allSpots = getAllSpotStatus();
+    void freeSpot(VehicleTypes vehicle, ParkingSpace space1){
+        vector<ParkingSpot> allSpots = space1.getAllSpotStatus();
 
         for(int i=0; i<allSpots.size() ; i++){
             if(allSpots[i].getSpotType() == vehicle){
