@@ -1,132 +1,124 @@
-#include <iostream>
-#include <cstdlib>
-#include <ctime>
-#include <vector>
+#include<bits/stdc++.h>
+using namespace std;
 
-class Player {
-private:
-    std::string name;
+class Players{
+    private:
+    string name;
     int position;
 
-public:
-    Player(const std::string& playerName) : name(playerName), position(0) {}
+    public:
+    Players(string name, int position) : name(name), position(position) {}
 
-    const std::string& getName() const {
-        return name;
-    }
-
-    int getPosition() const {
+    int getPosition(){
         return position;
     }
 
-    void setPosition(int newPosition) {
+    void setPosition(int newPosition){
         position = newPosition;
     }
-};
 
-class Dice {
-public:
-    int roll() const {
-        return rand() % 6 + 1;  // Roll a 6-sided die
+    string getName(){
+        return name;
     }
 };
 
-class Board {
-private:
-    int boardSize;
-    int* snakeLadderPositions;  // Array to store snake and ladder positions
+class Board{
+    private:
+    int size;
+    vector<int> snakesLadder;
 
-public:
-    Board(int size) : boardSize(size) {
-        snakeLadderPositions = new int[size];
-        for (int i = 0; i < size; ++i)
-            snakeLadderPositions[i] = 0;  // Initialize all positions to 0 (no snakes or ladders)
+    public:
+    Board(int size) : size(size) {
+        snakesLadder.resize(size,0);
     }
 
-    ~Board() {
-        delete[] snakeLadderPositions;
+    void setSnakeLadder(int startPosition, int endPosition){
+        snakesLadder[startPosition] =  endPosition;
     }
 
-    void setSnakeLadderPosition(int position, int target) {
-        snakeLadderPositions[position] = target;
+    int getNextPosition(int newPosition){
+        return newPosition + snakesLadder[newPosition];
     }
 
-    int getNextPosition(int currentPosition) const {
-        return currentPosition + snakeLadderPositions[currentPosition];
+    int getBoardSize(){
+        return size;
     }
 
-    bool isWinningPosition(int position) const {
-        return position == boardSize - 1;
+    bool isWinning(int position){
+        return position  == size -1;
     }
 };
 
-class Game {
-private:
+class Dice{
+    public:
+    int roll(){
+        return rand() % 6 +1;
+    }
+};
+
+class Game{
+    private:
     Board board;
-    std::vector<Player> players;
+    vector<Players> players;
     Dice dice;
 
-public:
-    Game(int boardSize, int numPlayers, const std::vector<std::string>& playerNames)
-        : board(boardSize) {
-        for (int i = 0; i < numPlayers; ++i) {
-            players.emplace_back(playerNames[i]);
-        }
+    public:
+    Game(int boardSize, int numberOfPlayer, vector<Players> allPlayers): board(boardSize), players(allPlayers)  {
 
-        // Set up snakes and ladders positions
-        board.setSnakeLadderPosition(3, -3);
-        board.setSnakeLadderPosition(11, -6);
-        board.setSnakeLadderPosition(17, -10);
-        board.setSnakeLadderPosition(19, -9);
-        board.setSnakeLadderPosition(27, -15);
-        board.setSnakeLadderPosition(21, 5);
-        board.setSnakeLadderPosition(5, 3);
-        board.setSnakeLadderPosition(7, 7);
-        board.setSnakeLadderPosition(9, 6);
-        board.setSnakeLadderPosition(25, 8);
+        
+        board.setSnakeLadder(21, 5);
+        board.setSnakeLadder(5, 3);
+        board.setSnakeLadder(7, 20);
+        board.setSnakeLadder(9, 6);
     }
 
-    void play() {
-        srand(time(0));  // Seed for random number generation
+    void play(){
+        
+        cout<<"total players "<<players.size()<<"\n";
+        int boardSize = board.getBoardSize();
+        cout<<"total players "<<players.size()<<"\n";
+        while(true){
+            for(int i=0; i<players.size(); i++){
+                int roll =  dice.roll();
+                int currentPosition =  players[i].getPosition();
 
-        while (true) {
-            for (int i = 0; i < players.size(); ++i) {
-                int roll = dice.roll();
-                std::cout << players[i].getName() << " rolled a " << roll << ". ";
-                int newPosition = players[i].getPosition() + roll;
+                int newPosition = currentPosition + roll;
 
-                if (newPosition < boardSize) {
+                if(newPosition < boardSize){
                     newPosition = board.getNextPosition(newPosition);
                     players[i].setPosition(newPosition);
-                    std::cout << players[i].getName() << " moved to position " << newPosition << ". ";
 
-                    if (board.isWinningPosition(newPosition)) {
-                        std::cout << players[i].getName() << " wins!\n";
+                    cout << players[i].getName() << " moved to position " << newPosition << ". ";
+
+                    if(board.isWinning(newPosition)){
+                        cout<<players[i].getName()<<" Wins\n";
                         return;
                     }
+                    cout<<"\n";
                 }
-
-                std::cout << std::endl;
             }
         }
     }
 };
 
-int main() {
-    int boardSize = 30;
-    int numPlayers;
 
-    std::cout << "Enter the number of players: ";
-    std::cin >> numPlayers;
+int main(){
+    
+    vector<Players> players;
+    int numberOfPlayer = 2;
 
-    std::vector<std::string> playerNames(numPlayers);
-    for (int i = 0; i < numPlayers; ++i) {
-        std::cout << "Enter name for Player " << i + 1 << ": ";
-        std::cin >> playerNames[i];
-    }
+    Players p1("Harsh", 0);
+    Players p2("xyz", 0);
 
-    Game game(boardSize, numPlayers, playerNames);
+    players.push_back(p1);
+    players.push_back(p2);
+
+    int boardSize = 38;
+
+        cout<<"total players "<<players.size()<<"\n";
+    Game game(boardSize, numberOfPlayer, players);
     game.play();
 
-    return 0;
+    return  0;
+
 }
