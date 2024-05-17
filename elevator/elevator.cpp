@@ -1,6 +1,5 @@
-#include <iostream>
-#include <vector>
-#include <queue>
+#include <bits/stdc++.h>
+using namespace std;
 
 enum class Direction
 {
@@ -40,7 +39,7 @@ class ElevatorIdleState : public ElevatorState
 public:
     void handleRequest(Request request) override
     {
-        std::cout << "Elevator is now moving to floor " << request.getFloor() << ".\n";
+         cout << "Elevator is now moving to floor " << request.getFloor() << ".\n";
     }
 };
 
@@ -49,7 +48,7 @@ class ElevatorMovingState : public ElevatorState
 public:
     void handleRequest(Request request) override
     {
-        std::cout << "Elevator is already moving. Cannot handle request right now.\n";
+         cout << "Elevator is already moving. Cannot handle request right now.\n";
     }
 };
 
@@ -76,7 +75,7 @@ public:
     void move()
     {
         // Simulate elevator movement
-        std::cout << "Elevator is moving.\n";
+         cout << "Elevator is moving.\n";
     }
 
     void handleRequest(Request request)
@@ -94,7 +93,7 @@ public:
 class ElevatorSystem
 {
 private:
-    std::vector<Elevator> elevators;
+     vector<Elevator> elevators;
 
 public:
     ElevatorSystem(int numElevators)

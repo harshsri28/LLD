@@ -1,7 +1,7 @@
 // need to add the state of brewCofeee
 
-#include <iostream>
-#include <map>
+#include<bits/stdc++.h>
+using namespace std;
 
 enum class CoffeeType
 {
@@ -58,24 +58,24 @@ class ReadyState : public CoffeeMachineState
 public:
     void displayOptions() override
     {
-        std::cout << "Welcome to the Coffee Machine!\n";
-        std::cout << "Available options:\n";
-        std::cout << "1. Espresso\n2. Latte\n3. Cappuccino\n";
+         cout << "Welcome to the Coffee Machine!\n";
+         cout << "Available options:\n";
+         cout << "1. Espresso\n2. Latte\n3. Cappuccino\n";
     }
 
     void selectCoffee(CoffeeType type, CoffeeSize size) override
     {
-        std::cout << "Selected coffee: ";
+         cout << "Selected coffee: ";
         switch (type)
         {
         case CoffeeType::ESPRESSO:
-            std::cout << "Espresso, ";
+             cout << "Espresso, ";
             break;
         case CoffeeType::LATTE:
-            std::cout << "Latte, ";
+             cout << "Latte, ";
             break;
         case CoffeeType::CAPPUCCINO:
-            std::cout << "Cappuccino, ";
+             cout << "Cappuccino, ";
             break;
         default:
             break;
@@ -84,13 +84,13 @@ public:
         switch (size)
         {
         case CoffeeSize::SMALL:
-            std::cout << "Size: Small\n";
+             cout << "Size: Small\n";
             break;
         case CoffeeSize::MEDIUM:
-            std::cout << "Size: Medium\n";
+             cout << "Size: Medium\n";
             break;
         case CoffeeSize::LARGE:
-            std::cout << "Size: Large\n";
+             cout << "Size: Large\n";
             break;
         default:
             break;
@@ -99,12 +99,12 @@ public:
 
     void brewCoffee() override
     {
-        std::cout << "Brewing the coffee...\n";
+         cout << "Brewing the coffee...\n";
     }
 
     void cancel() override
     {
-        std::cout << "Cancelling the selection.\n";
+         cout << "Cancelling the selection.\n";
     }
 };
 

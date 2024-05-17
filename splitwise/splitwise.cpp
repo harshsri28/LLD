@@ -1,19 +1,18 @@
-#include <iostream>
-#include <vector>
-#include <string>
+#include <bits/stdc++.h>
+using namespace std;
 
 class User
 {
 private:
     int id;
-    std::string name;
+     string name;
     double balance;
 
 public:
-    User(int id, const std::string &name);
+    User(int id, const  string &name);
 
     int getID() const;
-    std::string getName() const;
+     string getName() const;
     double getBalance() const;
 
     void updateBalance(double amount);
@@ -34,10 +33,10 @@ public:
 class PercentageExpenseSplit : public ExpenseSplit
 {
 private:
-    std::vector<double> percentages;
+     vector<double> percentages;
 
 public:
-    PercentageExpenseSplit(const std::vector<double> &percentages);
+    PercentageExpenseSplit(const  vector<double> &percentages);
 
     void calculateAmounts(double totalAmount, int numParticipants) override;
 };
@@ -45,10 +44,10 @@ public:
 class ExactExpenseSplit : public ExpenseSplit
 {
 private:
-    std::vector<double> amounts;
+     vector<double> amounts;
 
 public:
-    ExactExpenseSplit(const std::vector<double> &amounts);
+    ExactExpenseSplit(const  vector<double> &amounts);
 
     void calculateAmounts(double totalAmount, int numParticipants) override;
 };
@@ -57,16 +56,16 @@ class Expense
 {
 private:
     double amount;
-    std::string description;
+     string description;
     int payerID;
     ExpenseSplit *expenseSplit;
 
 public:
-    Expense(double amount, const std::string &description, int payerID, ExpenseSplit *expenseSplit);
+    Expense(double amount, const  string &description, int payerID, ExpenseSplit *expenseSplit);
     ~Expense();
 
     double getAmount() const;
-    std::string getDescription() const;
+     string getDescription() const;
     int getPayerID() const;
     ExpenseSplit *getExpenseSplit() const;
 };
@@ -74,8 +73,8 @@ public:
 class ExpenseManager
 {
 private:
-    std::vector<User> users;
-    std::vector<Expense> expenses;
+     vector<User> users;
+     vector<Expense> expenses;
 
 public:
     void addUser(const User &user);

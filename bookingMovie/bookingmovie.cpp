@@ -1,22 +1,21 @@
-#include <iostream>
-#include <vector>
-#include <string>
+#include <bits/stdc++.h>
+using namespace std;
 
 class Movie {
 private:
-    std::string title;
-    std::string genre;
+     string title;
+     string genre;
     int duration; // in minutes
 
 public:
-    Movie(const std::string& title, const std::string& genre, int duration)
+    Movie(const  string& title, const  string& genre, int duration)
         : title(title), genre(genre), duration(duration) {}
 
-    std::string getTitle() const {
+     string getTitle() const {
         return title;
     }
 
-    std::string getGenre() const {
+     string getGenre() const {
         return genre;
     }
 
@@ -50,10 +49,10 @@ class Show {
 private:
     Movie movie;
     CinemaHall hall;
-    std::string showTime;
+     string showTime;
 
 public:
-    Show(const Movie& movie, const CinemaHall& hall, const std::string& showTime)
+    Show(const Movie& movie, const CinemaHall& hall, const  string& showTime)
         : movie(movie), hall(hall), showTime(showTime) {}
 
     Movie getMovie() const {
@@ -64,7 +63,7 @@ public:
         return hall;
     }
 
-    std::string getShowTime() const {
+     string getShowTime() const {
         return showTime;
     }
 };
@@ -88,18 +87,18 @@ public:
 
 class Customer {
 private:
-    std::string name;
-    std::string email;
+     string name;
+     string email;
 
 public:
-    Customer(const std::string& name, const std::string& email)
+    Customer(const  string& name, const  string& email)
         : name(name), email(email) {}
 
-    std::string getName() const {
+     string getName() const {
         return name;
     }
 
-    std::string getEmail() const {
+     string getEmail() const {
         return email;
     }
 };
@@ -130,27 +129,27 @@ public:
 class Payment {
 private:
     double amount;
-    std::string paymentMethod;
+     string paymentMethod;
 
 public:
-    Payment(double amount, const std::string& paymentMethod)
+    Payment(double amount, const  string& paymentMethod)
         : amount(amount), paymentMethod(paymentMethod) {}
 
     double getAmount() const {
         return amount;
     }
 
-    std::string getPaymentMethod() const {
+     string getPaymentMethod() const {
         return paymentMethod;
     }
 };
 
 class BookingSystem {
 private:
-    std::vector<Movie> movies;
-    std::vector<CinemaHall> cinemaHalls;
-    std::vector<Show> shows;
-    std::vector<Booking> bookings;
+     vector<Movie> movies;
+     vector<CinemaHall> cinemaHalls;
+     vector<Show> shows;
+     vector<Booking> bookings;
 
 public:
     void addMovie(const Movie& movie) {
@@ -174,17 +173,17 @@ public:
             bookings.push_back(booking);
             return booking;
         } else {
-            std::cout << "Seats not available." << std::endl;
+             cout << "Seats not available." <<  endl;
             return Booking(Customer("", ""), Show(Movie("", "", 0), CinemaHall(0), ""), -1);
         }
     }
 
     void displayShows() {
         for (const auto& show : shows) {
-            std::cout << "Movie: " << show.getMovie().getTitle() << ", Genre: " << show.getMovie().getGenre()
+             cout << "Movie: " << show.getMovie().getTitle() << ", Genre: " << show.getMovie().getGenre()
                       << ", Duration: " << show.getMovie().getDuration() << " mins"
                       << ", Hall: " << show.getCinemaHall().getAvailableSeats() << " seats available"
-                      << ", Show Time: " << show.getShowTime() << std::endl;
+                      << ", Show Time: " << show.getShowTime() <<  endl;
         }
     }
 };
@@ -212,20 +211,20 @@ int main() {
     bookingSystem.addShow(show2);
 
     // Display available shows
-    std::cout << "Available Shows:" << std::endl;
+     cout << "Available Shows:" <<  endl;
     bookingSystem.displayShows();
 
     // Simulate a booking
     Customer customer("John Doe", "john@example.com");
     int numSeatsToBook = 2;
-    std::cout << "\nBooking " << numSeatsToBook << " seats for " << customer.getName() << std::endl;
+     cout << "\nBooking " << numSeatsToBook << " seats for " << customer.getName() <<  endl;
     Booking booking = bookingSystem.bookTicket(customer, show1, numSeatsToBook);
 
     if (booking.getTicket().getSeatNumber() != -1) {
-        std::cout << "Booking successful!" << std::endl;
-        std::cout << "Movie: " << booking.getShow().getMovie().getTitle() << std::endl;
-        std::cout << "Show Time: " << booking.getShow().getShowTime() << std::endl;
-        std::cout << "Seat Number: " << booking.getTicket().getSeatNumber() << std::endl;
+         cout << "Booking successful!" <<  endl;
+         cout << "Movie: " << booking.getShow().getMovie().getTitle() <<  endl;
+         cout << "Show Time: " << booking.getShow().getShowTime() <<  endl;
+         cout << "Seat Number: " << booking.getTicket().getSeatNumber() <<  endl;
     }
 
     return 0;

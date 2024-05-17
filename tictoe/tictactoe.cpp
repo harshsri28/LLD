@@ -1,16 +1,16 @@
-#include <iostream>
-#include <string>
+#include<bits/stdc++.h>
+using namespace std;
 
 class Player
 {
 private:
-    std::string playerName;
+     string playerName;
     char pieceType; // Symbol representing the player on the board
 
 public:
-    Player(const std::string &name, char piece) : playerName(name), pieceType(piece) {}
+    Player(const  string &name, char piece) : playerName(name), pieceType(piece) {}
 
-    const std::string &getPlayerName() const
+    const  string &getPlayerName() const
     {
         return playerName;
     }
@@ -49,13 +49,13 @@ public:
         {
             for (int j = 0; j < 3; j++)
             {
-                std::cout << board[i][j];
+                 cout << board[i][j];
                 if (j < 2)
-                    std::cout << '|';
+                     cout << '|';
             }
-            std::cout << '\n';
+             cout << '\n';
             if (i < 2)
-                std::cout << "-----\n";
+                 cout << "-----\n";
         }
     }
 
@@ -115,11 +115,11 @@ private:
     Player playerO;
     Player *currentPlayer;
 
-    Game(const std::string &playerNameX, const std::string &playerNameO)
+    Game(const  string &playerNameX, const  string &playerNameO)
         : playerX(playerNameX, 'X'), playerO(playerNameO, 'O'), currentPlayer(&playerX) {}
 
 public:
-    static Game *getInstance(const std::string &playerNameX, const std::string &playerNameO)
+    static Game *getInstance(const  string &playerNameX, const  string &playerNameO)
     {
         if (!instance)
             instance = new Game(playerNameX, playerNameO);
@@ -147,7 +147,7 @@ public:
         return &board;
     }
 
-    const std::string &getCurrentPlayerName() const
+    const  string &getCurrentPlayerName() const
     {
         return currentPlayer->getPlayerName();
     }
@@ -171,44 +171,44 @@ Game *Game::instance = nullptr;
 
 int main()
 {
-    std::string playerNameX, playerNameO;
-    std::cout << "Enter name for Player X: ";
-    std::cin >> playerNameX;
-    std::cout << "Enter name for Player O: ";
-    std::cin >> playerNameO;
+     string playerNameX, playerNameO;
+     cout << "Enter name for Player X: ";
+     cin >> playerNameX;
+     cout << "Enter name for Player O: ";
+     cin >> playerNameO;
 
     Game *game = Game::getInstance(playerNameX, playerNameO);
     game->reset();
 
-    std::cout << "Tic Tac Toe Game\n";
-    std::cout << "Player X: " << playerNameX << ", Player O: " << playerNameO << "\n\n";
+     cout << "Tic Tac Toe Game\n";
+     cout << "Player X: " << playerNameX << ", Player O: " << playerNameO << "\n\n";
 
     while (true)
     {
         Board *board = game->getBoard();
         board->display();
 
-        std::cout << "\nPlayer " << game->getCurrentPlayerName() << " (" << game->getCurrentPlayerPieceType() << "), enter your move (row[0-2] col[0-2]): ";
+         cout << "\nPlayer " << game->getCurrentPlayerName() << " (" << game->getCurrentPlayerPieceType() << "), enter your move (row[0-2] col[0-2]): ";
 
         int row, col;
-        std::cin >> row >> col;
+         cin >> row >> col;
 
         if (row < 0 || row > 2 || col < 0 || col > 2)
         {
-            std::cout << "Invalid input. Please try again.\n";
+             cout << "Invalid input. Please try again.\n";
             continue;
         }
 
         if (!board->placeSymbol(row, col, game->getCurrentPlayerPieceType()))
         {
-            std::cout << "Cell already taken. Please try again.\n";
+             cout << "Cell already taken. Please try again.\n";
             continue;
         }
 
         if (board->checkWin(game->getCurrentPlayerPieceType()))
         {
             board->display();
-            std::cout << "Player " << game->getCurrentPlayerName() << " wins!\n";
+             cout << "Player " << game->getCurrentPlayerName() << " wins!\n";
             break;
         }
 
@@ -225,7 +225,7 @@ int main()
         if (draw)
         {
             board->display();
-            std::cout << "It's a draw!\n";
+             cout << "It's a draw!\n";
             break;
         }
 
