@@ -1,237 +1,128 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-class Player
-{
-private:
-     string playerName;
-    char pieceType; // Symbol representing the player on the board
+class Player {
+    private:
+    string name;
+    char piece;  // 'X' or 'O'
 
-public:
-    Player(const  string &name, char piece) : playerName(name), pieceType(piece) {}
+    public:
+    Player(string name, char piece) : name(name), piece(piece) {}
 
-    const  string &getPlayerName() const
-    {
-        return playerName;
+    char getPiece() {
+        return piece;
     }
 
-    char getPieceType() const
-    {
-        return pieceType;
+    string getName() {
+        return name;
     }
 };
 
-class Board
-{
-private:
-    char board[3][3];
+class Board {
+    private:
+    vector<vector<char>> grid;
+    int size;
 
-public:
-    Board()
-    {
-        reset();
+    public:
+    Board(int size) : size(size) {
+        grid.resize(size, vector<char>(size, ' '));
     }
 
-    void reset()
-    {
-        for (int i = 0; i < 3; i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                board[i][j] = ' ';
-            }
-        }
-    }
-
-    void display() const
-    {
-        for (int i = 0; i < 3; i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                 cout << board[i][j];
-                if (j < 2)
-                     cout << '|';
-            }
-             cout << '\n';
-            if (i < 2)
-                 cout << "-----\n";
-        }
-    }
-
-    bool isCellEmpty(int row, int col) const
-    {
-        return board[row][col] == ' ';
-    }
-
-    bool placeSymbol(int row, int col, char symbol)
-    {
-        if (row < 0 || row >= 3 || col < 0 || col >= 3 || !isCellEmpty(row, col))
-            return false;
-
-        board[row][col] = symbol;
-        return true;
-    }
-
-    char getSymbol(int row, int col) const
-    {
-        return board[row][col];
-    }
-
-    // Check for a win
-    bool checkWin(char symbol) const
-    {
-        // Check rows
-        for (int i = 0; i < 3; i++)
-        {
-            if (board[i][0] == symbol && board[i][1] == symbol && board[i][2] == symbol)
-                return true;
-        }
-
-        // Check columns
-        for (int i = 0; i < 3; i++)
-        {
-            if (board[0][i] == symbol && board[1][i] == symbol && board[2][i] == symbol)
-                return true;
-        }
-
-        // Check diagonals
-        if (board[0][0] == symbol && board[1][1] == symbol && board[2][2] == symbol)
+    bool makeMove(int row, int col, char piece) {
+        if (row >= 0 && row < size && col >= 0 && col < size && grid[row][col] == ' ') {
+            grid[row][col] = piece;
             return true;
+        }
+        return false;
+    }
 
-        if (board[0][2] == symbol && board[1][1] == symbol && board[2][0] == symbol)
+    bool checkWin(char piece) {
+        // Check rows and columns
+        for (int i = 0; i < size; i++) {
+            if (all_of(grid[i].begin(), grid[i].end(), [piece](char c) { return c == piece; }))
+                return true;
+            if (all_of(grid.begin(), grid.end(), [i, piece](vector<char>& row) { return row[i] == piece; }))
+                return true;
+        }
+        // Check diagonals
+        if (all_of(grid.begin(), grid.end(), [n = 0, piece](vector<char>& row) mutable { return row[n++] == piece; }))
+            return true;
+        if (all_of(grid.begin(), grid.end(), [n = size-1, piece](vector<char>& row) mutable { return row[n--] == piece; }))
             return true;
 
         return false;
     }
+
+    bool isFull() {
+        for (int i = 0; i < size; i++) {
+            if (any_of(grid[i].begin(), grid[i].end(), [](char c) { return c == ' '; }))
+                return false;
+        }
+        return true;
+    }
+
+    void printBoard() {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                cout << grid[i][j];
+                if (j < size - 1) cout << " | ";
+            }
+            cout << "\n";
+            if (i < size - 1) cout << string(size * 4 - 1, '-') << "\n";
+        }
+        cout << "\n";
+    }
 };
 
-class Game
-{
-private:
-    static Game *instance;
+class Game {
+    private:
     Board board;
-    Player playerX;
-    Player playerO;
-    Player *currentPlayer;
+    vector<Player> players;
+    int currentPlayerIndex;
 
-    Game(const  string &playerNameX, const  string &playerNameO)
-        : playerX(playerNameX, 'X'), playerO(playerNameO, 'O'), currentPlayer(&playerX) {}
+    public:
+    Game(int boardSize, vector<Player> allPlayers) : board(boardSize), players(allPlayers), currentPlayerIndex(0) {}
 
-public:
-    static Game *getInstance(const  string &playerNameX, const  string &playerNameO)
-    {
-        if (!instance)
-            instance = new Game(playerNameX, playerNameO);
-        return instance;
-    }
+    void play() {
+        while (true) {
+            board.printBoard();
+            Player currentPlayer = players[currentPlayerIndex];
+            cout << currentPlayer.getName() << "'s turn (" << currentPlayer.getPiece() << "):\n";
 
-    void reset()
-    {
-        board.reset();
-        currentPlayer = &playerX;
-    }
+            int row, col;
+            cout << "Enter row and column: ";
+            cin >> row >> col;
 
-    void switchPlayer()
-    {
-        currentPlayer = (currentPlayer == &playerX) ? &playerO : &playerX;
-    }
-
-    Player *getCurrentPlayer() const
-    {
-        return currentPlayer;
-    }
-
-    Board *getBoard()
-    {
-        return &board;
-    }
-
-    const  string &getCurrentPlayerName() const
-    {
-        return currentPlayer->getPlayerName();
-    }
-
-    char getCurrentPlayerPieceType() const
-    {
-        return currentPlayer->getPieceType();
-    }
-
-    static void destroyInstance()
-    {
-        if (instance)
-        {
-            delete instance;
-            instance = nullptr;
-        }
-    }
-};
-
-Game *Game::instance = nullptr;
-
-int main()
-{
-     string playerNameX, playerNameO;
-     cout << "Enter name for Player X: ";
-     cin >> playerNameX;
-     cout << "Enter name for Player O: ";
-     cin >> playerNameO;
-
-    Game *game = Game::getInstance(playerNameX, playerNameO);
-    game->reset();
-
-     cout << "Tic Tac Toe Game\n";
-     cout << "Player X: " << playerNameX << ", Player O: " << playerNameO << "\n\n";
-
-    while (true)
-    {
-        Board *board = game->getBoard();
-        board->display();
-
-         cout << "\nPlayer " << game->getCurrentPlayerName() << " (" << game->getCurrentPlayerPieceType() << "), enter your move (row[0-2] col[0-2]): ";
-
-        int row, col;
-         cin >> row >> col;
-
-        if (row < 0 || row > 2 || col < 0 || col > 2)
-        {
-             cout << "Invalid input. Please try again.\n";
-            continue;
-        }
-
-        if (!board->placeSymbol(row, col, game->getCurrentPlayerPieceType()))
-        {
-             cout << "Cell already taken. Please try again.\n";
-            continue;
-        }
-
-        if (board->checkWin(game->getCurrentPlayerPieceType()))
-        {
-            board->display();
-             cout << "Player " << game->getCurrentPlayerName() << " wins!\n";
-            break;
-        }
-
-        // Check for a draw (all cells filled)
-        bool draw = true;
-        for (int i = 0; i < 3; i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                if (board->getSymbol(i, j) == ' ')
-                    draw = false;
+            if (board.makeMove(row, col, currentPlayer.getPiece())) {
+                if (board.checkWin(currentPlayer.getPiece())) {
+                    board.printBoard();
+                    cout << currentPlayer.getName() << " wins!\n";
+                    break;
+                } else if (board.isFull()) {
+                    board.printBoard();
+                    cout << "The game is a draw!\n";
+                    break;
+                }
+                currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+            } else {
+                cout << "Invalid move. Try again.\n";
             }
         }
-        if (draw)
-        {
-            board->display();
-             cout << "It's a draw!\n";
-            break;
-        }
-
-        game->switchPlayer();
     }
+};
 
-    Game::destroyInstance();
+int main() {
+    vector<Player> players;
+    Player p1("Player 1", 'X');
+    Player p2("Player 2", 'O');
+
+    players.push_back(p1);
+    players.push_back(p2);
+
+    int boardSize = 3;
+
+    Game game(boardSize, players);
+    game.play();
+
     return 0;
 }
