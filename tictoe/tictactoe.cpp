@@ -39,24 +39,32 @@ class Board {
     bool checkWin(char piece) {
         // Check rows and columns
         for (int i = 0; i < size; i++) {
-            if (all_of(grid[i].begin(), grid[i].end(), [piece](char c) { return c == piece; }))
-                return true;
-            if (all_of(grid.begin(), grid.end(), [i, piece](vector<char>& row) { return row[i] == piece; }))
-                return true;
+            bool rowWin = true;
+            bool colWin = true;
+            for (int j = 0; j < size; j++) {
+                if (grid[i][j] != piece) rowWin = false;
+                if (grid[j][i] != piece) colWin = false;
+            }
+            if (rowWin || colWin) return true;
         }
+
         // Check diagonals
-        if (all_of(grid.begin(), grid.end(), [n = 0, piece](vector<char>& row) mutable { return row[n++] == piece; }))
-            return true;
-        if (all_of(grid.begin(), grid.end(), [n = size-1, piece](vector<char>& row) mutable { return row[n--] == piece; }))
-            return true;
+        bool diag1Win = true;
+        bool diag2Win = true;
+        for (int i = 0; i < size; i++) {
+            if (grid[i][i] != piece) diag1Win = false;
+            if (grid[i][size - 1 - i] != piece) diag2Win = false;
+        }
+        if (diag1Win || diag2Win) return true;
 
         return false;
     }
 
     bool isFull() {
         for (int i = 0; i < size; i++) {
-            if (any_of(grid[i].begin(), grid[i].end(), [](char c) { return c == ' '; }))
-                return false;
+            for (int j = 0; j < size; j++) {
+                if (grid[i][j] == ' ') return false;
+            }
         }
         return true;
     }
