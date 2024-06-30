@@ -110,7 +110,7 @@ int main(){
     SocialMedia Facebook;
     
     Users user1(1, "Harsh");
-    Users user2(2, "Shruti");
+    Users user2(2, "alex");
 
     Facebook.addUserToCollection(user1);
     Facebook.addUserToCollection(user2);
