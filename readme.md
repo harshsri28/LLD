@@ -11,6 +11,7 @@
 | socialMedia     | https://github.com/harshsri28/LLD/tree/master/socialMedia     |
 | splitWise       | https://github.com/harshsri28/LLD/tree/master/splitwise       |
 | tictoe          | https://github.com/harshsri28/LLD/tree/master/tictoe          |
+| Library Managemnet | https://github.com/harshsri28/LLD/tree/master/libraryManagement |
 
 # Contributing
 
